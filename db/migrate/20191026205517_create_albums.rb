@@ -3,7 +3,7 @@ class CreateAlbums < ActiveRecord::Migration[6.0]
     create_table :albums do |t|
       t.string :title
       t.string :genre
-      t.reference :artist
+      t.references :artist
 
       t.timestamps
     end
