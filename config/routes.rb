@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   # namespace the controllers without affecting the URI
   namespace :api do
     namespace :v1 do
-      resources :artists
+      resources :artists, :musics, :albums
     end
   end
 end
