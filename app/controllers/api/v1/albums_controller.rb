@@ -53,6 +53,6 @@ class Api::V1::AlbumsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def album_params
-      params.fetch(:album, {}).permit(:title, :genre)
+      params.fetch(:album, {}).permit(:title, :genre, :artist_id)
     end
 end
