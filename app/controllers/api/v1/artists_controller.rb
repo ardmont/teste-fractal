@@ -18,7 +18,7 @@ class Api::V1::ArtistsController < ApplicationController
     @api_v1_artist = Artist.new(api_v1_artist_params)
 
     if @api_v1_artist.save
-      render json: @api_v1_artist, status: :created, location: @api_v1_artist
+      render json: @api_v1_artist, status: :created
     else
       render json: @api_v1_artist.errors, status: :unprocessable_entity
     end
@@ -46,6 +46,6 @@ class Api::V1::ArtistsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def api_v1_artist_params
-      params.fetch(:api_v1_artist, {})
+      params.fetch(:artist, {}).permit(:name, :genre)
     end
 end
