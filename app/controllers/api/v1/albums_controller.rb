@@ -5,12 +5,22 @@ class Api::V1::AlbumsController < ApplicationController
 
   # GET /api/v1/albums
   def index
-    @albums = Album.includes(:artist).paginate(page: params[:page], per_page: 30)
+    albums = Album.includes(:artist).paginate(page: params[:page], per_page: 30)
 
-    # Serializa o objeto albums para posteriormente adicionar artist e musics
-    @albums_as_json = @albums.as_json
+    # Este array armazenará os álbums e será utilizado como resposta
+    response = []
 
-    render json: @albums_as_json
+    albums.each do |album|
+      # Serializa o objeto album para posteriormente adicionar artist e musics
+      album_as_json = album.as_json
+
+      # Adiciona o artista do álbum ao json que será enviado
+      album_as_json["artist"] = album.artist
+
+      response << album_as_json
+    end
+
+    render json: response
   end
 
   # GET /api/v1/albums/:id
