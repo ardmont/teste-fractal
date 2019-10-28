@@ -106,4 +106,13 @@ RSpec.describe "Api::V1::Musics", type: :request do
     end
   end
 
+  # Suíte de testes para DELETE /api/v1/musics/:id
+  describe 'DELETE /api/v1/musics/:id' do
+    before { delete "/api/v1/musics/#{music_id}" }
+
+    it 'retorna status code 204' do
+      expect(response).to have_http_status(204)
+    end
+  end
+
 end
