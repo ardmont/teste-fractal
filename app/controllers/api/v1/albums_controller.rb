@@ -1,6 +1,6 @@
 class Api::V1::AlbumsController < ApplicationController
+  before_action :set_artist, only: :create
   before_action :set_musics, only: [:create, :update]
-  before_action :set_artist, only: [:create, :update]
   before_action :set_album, only: [:show, :update, :destroy]
 
   # GET /api/v1/albums
@@ -36,7 +36,7 @@ class Api::V1::AlbumsController < ApplicationController
     if(defined?(@musics)) then @album.musics << @musics end
 
     # Atualiza o álbum
-    if @album.update(album_params.merge({artist: @artist}))
+    if @album.update(album_params)
       render json: @album
     else
       render json: @album.errors, status: :unprocessable_entity
