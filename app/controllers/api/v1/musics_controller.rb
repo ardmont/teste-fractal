@@ -1,51 +1,52 @@
 class Api::V1::MusicsController < ApplicationController
-  before_action :set_api_v1_music, only: [:show, :update, :destroy]
+  before_action :set_music, only: [:show, :update, :destroy]
 
   # GET /api/v1/musics
   def index
-    @api_v1_musics = Music.paginate(page: params[:page], per_page: 30)
+    # Busca todos as musicas, com paginação de 30 elementos por página e faz eager loading com Albums
+    @musics = Music.includes(:albums).paginate(page: params[:page], per_page: 30)
 
-    render json: @api_v1_musics
+    render json: @musics
   end
 
   # GET /api/v1/musics/:id
   def show
-    render json: @api_v1_music
+    render json: @music
   end
 
   # POST /api/v1/musics
   def create
-    @api_v1_music = Music.new(api_v1_music_params)
+    @music = Music.new(music_params)
 
-    if @api_v1_music.save
-      render json: @api_v1_music, status: :created
+    if @music.save
+      render json: @music, status: :created
     else
-      render json: @api_v1_music.errors, status: :unprocessable_entity
+      render json: @music.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /api/v1/musics/:id
   def update
-    if @api_v1_music.update(api_v1_music_params)
-      render json: @api_v1_music
+    if @music.update(music_params)
+      render json: @music
     else
-      render json: @api_v1_music.errors, status: :unprocessable_entity
+      render json: @music.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /api/v1/musics/:id
   def destroy
-    @api_v1_music.destroy
+    @music.destroy
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_api_v1_music
-      @api_v1_music = Music.find(params[:id])
+    def set_music
+      @music = Music.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
-    def api_v1_music_params
+    def music_params
       params.fetch(:music, {}).permit(:title, :duration, :genre)
     end
 end
