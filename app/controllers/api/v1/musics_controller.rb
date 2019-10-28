@@ -8,7 +8,7 @@ class Api::V1::MusicsController < ApplicationController
     render json: @api_v1_musics
   end
 
-  # GET /api/v1/musics/1
+  # GET /api/v1/musics/:id
   def show
     render json: @api_v1_music
   end
@@ -24,7 +24,7 @@ class Api::V1::MusicsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /api/v1/musics/1
+  # PATCH/PUT /api/v1/musics/:id
   def update
     if @api_v1_music.update(api_v1_music_params)
       render json: @api_v1_music
@@ -33,7 +33,7 @@ class Api::V1::MusicsController < ApplicationController
     end
   end
 
-  # DELETE /api/v1/musics/1
+  # DELETE /api/v1/musics/:id
   def destroy
     @api_v1_music.destroy
   end

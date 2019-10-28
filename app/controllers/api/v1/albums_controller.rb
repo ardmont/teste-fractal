@@ -5,7 +5,7 @@ class Api::V1::AlbumsController < ApplicationController
 
   # GET /api/v1/albums
   def index
-    # Busca todos os álbums, com paginação de 30 elementos por página e fazendo eager loading com Artist e Music
+    # Busca todos os álbums, com paginação de 30 elementos por página e faz eager loading com Artist e Music
     albums = Album.includes(:artist, :musics).paginate(page: params[:page], per_page: 30)
 
     # Este array armazenará os álbums e será utilizado como resposta
