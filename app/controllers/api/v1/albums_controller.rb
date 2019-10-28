@@ -10,7 +10,7 @@ class Api::V1::AlbumsController < ApplicationController
     render json: @albums
   end
 
-  # GET /api/v1/albums/1
+  # GET /api/v1/albums/:id
   def show
     # Converte o objeto @album em json
     @album_as_json = @album.as_json
@@ -36,7 +36,7 @@ class Api::V1::AlbumsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /api/v1/albums/1
+  # PATCH/PUT /api/v1/albums/:id
   def update
     # Verifica se existem musicas a serem adicionadas, e as vincula ao álbum
     if(defined?(@musics)) then @album.musics << @musics end
@@ -49,7 +49,7 @@ class Api::V1::AlbumsController < ApplicationController
     end
   end
 
-  # DELETE /api/v1/albums/1
+  # DELETE /api/v1/albums/:id
   def destroy
     @album.destroy
   end
