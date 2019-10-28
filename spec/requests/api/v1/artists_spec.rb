@@ -1,12 +1,12 @@
 require 'rails_helper'
 
-RSpec.describe "Api::V1::Artists", type: :request do
+RSpec.describe 'Api::V1::Artists', type: :request do
   # Inicia os dados de teste utilizando a factory criada pelo factory_bot
   let!(:artists) { create_list(:artist, 45) }
   let(:artist_id) { artists.first.id }
 
   # Suíte de testes para GET /api/v1/artists
-  describe "GET /api/v1/artists" do
+  describe 'GET /api/v1/artists' do
     # Faz requisições GET HTTP antes de cada exemplo
     before { get '/api/v1/artists' }
 
@@ -22,7 +22,7 @@ RSpec.describe "Api::V1::Artists", type: :request do
   end
 
   # Suíte de testes para GET /api/v1/artists?page=2
-  describe "GET /api/v1/artists?page=2" do
+  describe 'GET /api/v1/artists?page=2' do
     # Faz requisições GET HTTP antes de cada exemplo
     before { get '/api/v1/artists?page=2' }
 
@@ -61,4 +61,30 @@ RSpec.describe "Api::V1::Artists", type: :request do
     end
   end
 
+  # Suíte de testes para POST /api/v1/artists
+  describe 'POST /api/v1/artists' do
+    # Payload valido
+    let(:valid_payload) { { name: 'Test Artist', genre: 'Rock' } }
+
+    context 'Quando o payload for valido' do
+      before { post '/api/v1/artists', as: :json, params: valid_payload }
+
+      it 'Cria um artista' do
+        expect(json['name']).to eq('Test Artist')
+      end
+
+      it 'retorna status code 201' do
+        expect(response).to have_http_status(201)
+      end
+    end
+
+    context 'Quando o payload não for valido' do
+      # Requisião com com payload invalido. Está sem o gênero do artista.
+      before { post '/api/v1/artists', as: :json, params: { name: 'Test Artist' } }
+
+      it 'returna status code 422' do
+        expect(response).to have_http_status(422)
+      end
+    end
+  end
 end
