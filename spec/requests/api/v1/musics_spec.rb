@@ -89,4 +89,21 @@ RSpec.describe "Api::V1::Musics", type: :request do
     end
   end
 
+  # Suíte de testes para PUT /api/v1/musics/:id
+  describe 'PUT /api/v1/musics/:id' do
+    let(:valid_payload) { { genre: 'Samba' } }
+
+    context 'Quando existir registro' do
+      before { put "/api/v1/musics/#{music_id}",  as: :json, params: valid_payload }
+
+      it 'Atualiza o registro' do
+        expect(json['genre']).to eq('Samba')
+      end
+
+      it 'retorna status code 200' do
+        expect(response).to have_http_status(200)
+      end
+    end
+  end
+
 end
