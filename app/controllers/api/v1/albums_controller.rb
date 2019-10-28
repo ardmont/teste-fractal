@@ -5,7 +5,8 @@ class Api::V1::AlbumsController < ApplicationController
 
   # GET /api/v1/albums
   def index
-    albums = Album.includes(:artist).paginate(page: params[:page], per_page: 30)
+    # Busca todos os álbums, com paginação de 30 elementos por página e fazendo eager loading com Artist e Music
+    albums = Album.includes(:artist, :musics).paginate(page: params[:page], per_page: 30)
 
     # Este array armazenará os álbums e será utilizado como resposta
     response = []
@@ -16,6 +17,9 @@ class Api::V1::AlbumsController < ApplicationController
 
       # Adiciona o artista do álbum ao json que será enviado
       album_as_json["artist"] = album.artist
+
+      # Adiciona as musicas do álbum ao json que será enviado
+      album_as_json["musics"] = album.musics.as_json
 
       response << album_as_json
     end
@@ -73,7 +77,7 @@ class Api::V1::AlbumsController < ApplicationController
   private
     # Procura e cria a variável do Album com o id informado, com eager loading de Artist e Music
     def set_album
-      @album = Album.includes(:artist, :musics).find(params[:id]).limit(10)
+      @album = Album.includes(:artist, :musics).find(params[:id])
     end
 
     # Procura e cria a variável do Artist com o id informado pelo parâmetro artist_id
