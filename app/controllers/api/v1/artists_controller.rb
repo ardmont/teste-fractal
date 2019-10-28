@@ -1,51 +1,52 @@
 class Api::V1::ArtistsController < ApplicationController
-  before_action :set_api_v1_artist, only: [:show, :update, :destroy]
+  before_action :set_artist, only: [:show, :update, :destroy]
 
   # GET /api/v1/artists
   def index
-    @api_v1_artists = Artist.paginate(page: params[:page], per_page: 30)
+    # Busca todos os artistas, com paginação de 30 elementos por página e faz eager loading com Albums
+    @artists = Artist.includes(:albums).paginate(page: params[:page], per_page: 30)
 
-    render json: @api_v1_artists
+    render json: @artists
   end
 
   # GET /api/v1/artists/:id
   def show
-    render json: @api_v1_artist
+    render json: @artist
   end
 
   # POST /api/v1/artists
   def create
-    @api_v1_artist = Artist.new(api_v1_artist_params)
+    @artist = Artist.new(artist_params)
 
-    if @api_v1_artist.save
-      render json: @api_v1_artist, status: :created
+    if @artist.save
+      render json: @artist, status: :created
     else
-      render json: @api_v1_artist.errors, status: :unprocessable_entity
+      render json: @artist.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /api/v1/artists/:id
   def update
-    if @api_v1_artist.update(api_v1_artist_params)
-      render json: @api_v1_artist
+    if @artist.update(artist_params)
+      render json: @artist
     else
-      render json: @api_v1_artist.errors, status: :unprocessable_entity
+      render json: @artist.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /api/v1/artists/:id
   def destroy
-    @api_v1_artist.destroy
+    @artist.destroy
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_api_v1_artist
-      @api_v1_artist = Artist.find(params[:id])
+    def set_artist
+      @artist = Artist.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
-    def api_v1_artist_params
+    def artist_params
       params.fetch(:artist, {}).permit(:name, :genre)
     end
 end
