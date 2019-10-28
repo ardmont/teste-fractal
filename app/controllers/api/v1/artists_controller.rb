@@ -24,7 +24,13 @@ class Api::V1::ArtistsController < ApplicationController
 
   # GET /api/v1/artists/:id
   def show
-    render json: @artist
+    # Serializa o objeto artist para posteriormente adicionar os álbums do artista
+    artist_as_json = @artist.as_json
+
+    # Adiciona os álbums do artista ao json que será enviado
+    artist_as_json["albums"] = @artist.albums
+    
+    render json: artist_as_json
   end
 
   # POST /api/v1/artists
@@ -53,9 +59,9 @@ class Api::V1::ArtistsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+    # Procura e cria a variável do Album com o id informado, com eager loading de Artist e Music
     def set_artist
-      @artist = Artist.find(params[:id])
+      @artist = Artist.includes(:albums).find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
