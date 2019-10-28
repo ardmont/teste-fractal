@@ -4,14 +4,33 @@ class Api::V1::MusicsController < ApplicationController
   # GET /api/v1/musics
   def index
     # Busca todos as musicas, com paginação de 30 elementos por página e faz eager loading com Albums
-    @musics = Music.includes(:albums).paginate(page: params[:page], per_page: 30)
+    musics = Music.includes(:albums).paginate(page: params[:page], per_page: 30)
 
-    render json: @musics
+    # Este array armazenará os artistas e será utilizado como resposta
+    response = []
+
+    musics.each do |music|
+      # Serializa o objeto music para posteriormente adicionar os álbums relacionados a música
+      music_as_json = music.as_json
+
+      # Adiciona os álbums relacionados a música ao json que será enviado
+      music_as_json["albums"] = music.albums
+
+      response << music_as_json
+    end
+
+    render json: response
   end
 
   # GET /api/v1/musics/:id
   def show
-    render json: @music
+    # Serializa o objeto music para posteriormente adicionar os álbums relacionados a música
+    music_as_json = @music.as_json
+
+    # Adiciona os álbums relacionados a música ao json que será enviado
+    music_as_json["albums"] = @music.albums
+    
+    render json: music_as_json
   end
 
   # POST /api/v1/musics
@@ -40,9 +59,9 @@ class Api::V1::MusicsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+    # Procura e cria a variável do Artist com o id informado, e faz eager loading de Album
     def set_music
-      @music = Music.find(params[:id])
+      @music = Music.includes(:albums).find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
