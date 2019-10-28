@@ -3,7 +3,7 @@ class Api::V1::ArtistsController < ApplicationController
 
   # GET /api/v1/artists
   def index
-    @api_v1_artists = Artist.all
+    @api_v1_artists = Artist.paginate(page: params[:page], per_page: 30)
 
     render json: @api_v1_artists
   end

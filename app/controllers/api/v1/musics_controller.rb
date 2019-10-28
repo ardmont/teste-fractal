@@ -3,7 +3,7 @@ class Api::V1::MusicsController < ApplicationController
 
   # GET /api/v1/musics
   def index
-    @api_v1_musics = Music.all
+    @api_v1_musics = Music.paginate(page: params[:page], per_page: 30)
 
     render json: @api_v1_musics
   end

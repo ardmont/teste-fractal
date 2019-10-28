@@ -5,7 +5,7 @@ class Api::V1::AlbumsController < ApplicationController
 
   # GET /api/v1/albums
   def index
-    @albums = Album.includes(:artist)
+    @albums = Album.includes(:artist).paginate(page: params[:page], per_page: 30)
 
     # Serializa o objeto albums para posteriormente adicionar artist e musics
     @albums_as_json = @albums.as_json
