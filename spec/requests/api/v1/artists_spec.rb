@@ -7,33 +7,34 @@ RSpec.describe 'Api::V1::Artists', type: :request do
 
   # Suíte de testes para GET /api/v1/artists
   describe 'GET /api/v1/artists' do
-    # Faz requisições GET HTTP antes de cada exemplo
-    before { get '/api/v1/artists' }
+    context 'GET /api/v1/artists' do
+      # Faz requisições GET HTTP antes de cada exemplo
+      before { get '/api/v1/artists' }
 
-    it 'Retorna lista de artistas sem paginação' do
-      # `json` é um helper que converte o corpo das respostas em json
-      expect(json).not_to be_empty
-      expect(json.size).to eq(30)
+      it 'Retorna lista de artistas sem paginação' do
+        # `json` é um helper que converte o corpo das respostas em json
+        expect(json).not_to be_empty
+        expect(json.size).to eq(30)
+      end
+
+      it 'Retorna status code 200 sem paginação' do
+        expect(response).to have_http_status(200)
+      end
     end
 
-    it 'Retorna status code 200 sem paginação' do
-      expect(response).to have_http_status(200)
-    end
-  end
+    context 'GET /api/v1/artists?page=2' do
+      # Faz requisições GET HTTP antes de cada exemplo
+      before { get '/api/v1/artists?page=2' }
 
-  # Suíte de testes para GET /api/v1/artists?page=2
-  describe 'GET /api/v1/artists?page=2' do
-    # Faz requisições GET HTTP antes de cada exemplo
-    before { get '/api/v1/artists?page=2' }
+      it 'Retorna lista de artistas com paginação' do
+        # `json` é um helper que converte o corpo das respostas em json
+        expect(json).not_to be_empty
+        expect(json.size).to eq(15)
+      end
 
-    it 'Retorna lista de artistas com paginação' do
-      # `json` é um helper que converte o corpo das respostas em json
-      expect(json).not_to be_empty
-      expect(json.size).to eq(15)
-    end
-
-    it 'Retorna status code 200 com paginação' do
-      expect(response).to have_http_status(200)
+      it 'Retorna status code 200 com paginação' do
+        expect(response).to have_http_status(200)
+      end
     end
   end
 
