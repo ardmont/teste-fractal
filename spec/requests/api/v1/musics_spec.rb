@@ -62,5 +62,31 @@ RSpec.describe "Api::V1::Musics", type: :request do
     end
   end
 
+  # Suíte de testes para POST /api/v1/musics
+  describe 'POST /api/v1/musics' do
+    # Payload válido
+    let(:valid_payload) { { title: 'Test Music', genre: 'Rock', duration: 350 } }
+
+    context 'Quando o payload for válido' do
+      before { post '/api/v1/musics', as: :json, params: valid_payload }
+
+      it 'Cria um musica' do
+        expect(json['title']).to eq('Test Music')
+      end
+
+      it 'retorna status code 201' do
+        expect(response).to have_http_status(201)
+      end
+    end
+
+    context 'Quando o payload não for válido' do
+      # Requisião com com payload inválido. Está sem o gênero da musica.
+      before { post '/api/v1/musics', as: :json, params: { title: 'Test Music', duration: 350 } }
+
+      it 'retorna status code 422' do
+        expect(response).to have_http_status(422)
+      end
+    end
+  end
 
 end
