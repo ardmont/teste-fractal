@@ -64,4 +64,31 @@ RSpec.describe "Api::V1::Albums", type: :request do
     end
   end
 
+  # Suíte de testes para POST /api/v1/albums
+  describe 'POST /api/v1/albums' do
+    # Payload válido
+    let(:valid_payload) { { title: 'Test Album', genre: 'Rock', artist_id: artist_id } }
+
+    context 'Quando o payload for válido' do
+      before { post '/api/v1/albums', as: :json, params: valid_payload }
+
+      it 'Cria um album' do
+        expect(json['title']).to eq('Test Album')
+      end
+
+      it 'retorna status code 201' do
+        expect(response).to have_http_status(201)
+      end
+    end
+
+    context 'Quando o payload não for válido' do
+      # Requisião com com payload inválido. Está sem o gênero do album.
+      before { post '/api/v1/albums', as: :json, params: { title: 'Test Album', artist_id: artist_id } }
+
+      it 'retorna status code 422' do
+        expect(response).to have_http_status(422)
+      end
+    end
+  end  
+
 end
