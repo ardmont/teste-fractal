@@ -39,4 +39,29 @@ RSpec.describe "Api::V1::Albums", type: :request do
       end
     end
   end
+
+  # Suíte de testes para GET /api/v1/albums/:id
+  describe 'GET /api/v1/albums/:id' do
+    before { get "/api/v1/albums/#{album_id}" }
+
+    context 'Quando existir registro' do
+      it 'retorna o álbum' do
+        expect(json).not_to be_empty
+        expect(json['id']).to eq(album_id)
+      end
+
+      it 'retorna status code 200' do
+        expect(response).to have_http_status(200)
+      end
+    end
+
+    context 'Quando não existir registro' do
+      let(:album_id) { 100 }
+
+      it 'retorna status code 404' do
+        expect(response).to have_http_status(404)
+      end
+    end
+  end
+
 end

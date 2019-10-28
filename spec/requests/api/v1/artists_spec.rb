@@ -43,12 +43,12 @@ RSpec.describe 'Api::V1::Artists', type: :request do
     before { get "/api/v1/artists/#{artist_id}" }
 
     context 'Quando existir registro' do
-      it 'returna o artista' do
+      it 'retorna o artista' do
         expect(json).not_to be_empty
         expect(json['id']).to eq(artist_id)
       end
 
-      it 'returna status code 200' do
+      it 'retorna status code 200' do
         expect(response).to have_http_status(200)
       end
     end
@@ -56,7 +56,7 @@ RSpec.describe 'Api::V1::Artists', type: :request do
     context 'Quando não existir registro' do
       let(:artist_id) { 100 }
 
-      it 'returna status code 404' do
+      it 'retorna status code 404' do
         expect(response).to have_http_status(404)
       end
     end
@@ -83,7 +83,7 @@ RSpec.describe 'Api::V1::Artists', type: :request do
       # Requisião com com payload inválido. Está sem o gênero do artista.
       before { post '/api/v1/artists', as: :json, params: { name: 'Test Artist' } }
 
-      it 'returna status code 422' do
+      it 'retorna status code 422' do
         expect(response).to have_http_status(422)
       end
     end
