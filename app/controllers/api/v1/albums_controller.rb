@@ -5,9 +5,12 @@ class Api::V1::AlbumsController < ApplicationController
 
   # GET /api/v1/albums
   def index
-    @albums = Album.all
+    @albums = Album.includes(:artist)
 
-    render json: @albums
+    # Serializa o objeto albums para posteriormente adicionar artist e musics
+    @albums_as_json = @albums.as_json
+
+    render json: @albums_as_json
   end
 
   # GET /api/v1/albums/:id
@@ -60,7 +63,7 @@ class Api::V1::AlbumsController < ApplicationController
   private
     # Procura e cria a variável do Album com o id informado, com eager loading de Artist e Music
     def set_album
-      @album = Album.includes(:artist, :musics).find(params[:id])
+      @album = Album.includes(:artist, :musics).find(params[:id]).limit(10)
     end
 
     # Procura e cria a variável do Artist com o id informado pelo parâmetro artist_id
