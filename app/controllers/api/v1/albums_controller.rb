@@ -61,6 +61,12 @@ class Api::V1::AlbumsController < ApplicationController
     # Verifica se existem musicas a serem adicionadas, e as vincula ao álbum
     if(defined?(@musics)) then @album.musics << @musics end
 
+    # Verifica se existem musicas a serem removidas, e as remove do álbum
+    if(params.has_key?(:remove_musics)) then
+      musics_to_remove = Music.where(id: params[:remove_musics])
+      @album.musics.delete(musics_to_remove)
+    end
+
     # Atualiza o álbum
     if @album.update(album_params)
       render json: @album
