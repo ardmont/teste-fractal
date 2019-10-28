@@ -1,4 +1,5 @@
 class Api::V1::AlbumsController < ApplicationController
+  before_action :set_musics, only: [:create, :update]
   before_action :set_artist, only: [:create, :update]
   before_action :set_album, only: [:show, :update, :destroy]
 
@@ -19,6 +20,9 @@ class Api::V1::AlbumsController < ApplicationController
     # Cria um novo Album e passa o objeto do artist encontrado como valor para o campo artist
     @album = Album.new(album_params.merge({artist: @artist}))
 
+    # Verifica se existem musicas a serem adicionadas, e as vincula ao álbum
+    if(defined?(@musics)) then @album.musics << @musics end
+
     if @album.save
       render json: @album, status: :created
     else
@@ -28,6 +32,10 @@ class Api::V1::AlbumsController < ApplicationController
 
   # PATCH/PUT /api/v1/albums/1
   def update
+    # Verifica se existem musicas a serem adicionadas, e as vincula ao álbum
+    if(defined?(@musics)) then @album.musics << @musics end
+
+    # Atualiza o álbum
     if @album.update(album_params.merge({artist: @artist}))
       render json: @album
     else
@@ -49,6 +57,13 @@ class Api::V1::AlbumsController < ApplicationController
     # Procura e cria a variável do Artist com o id informado pelo parâmetro artist_id
     def set_artist
       @artist = Artist.find(params[:artist_id])
+    end
+
+    # Verifica se existem musicas apra serem adicionadas, e inicia a variável musics
+    def set_musics
+      if(params.has_key?(:add_musics)) then
+        @musics = Music.where(id: params[:add_musics])
+      end
     end
 
     # Only allow a trusted parameter "white list" through.
