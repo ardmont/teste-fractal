@@ -63,10 +63,10 @@ RSpec.describe 'Api::V1::Artists', type: :request do
 
   # Suíte de testes para POST /api/v1/artists
   describe 'POST /api/v1/artists' do
-    # Payload valido
+    # Payload válido
     let(:valid_payload) { { name: 'Test Artist', genre: 'Rock' } }
 
-    context 'Quando o payload for valido' do
+    context 'Quando o payload for válido' do
       before { post '/api/v1/artists', as: :json, params: valid_payload }
 
       it 'Cria um artista' do
@@ -78,8 +78,8 @@ RSpec.describe 'Api::V1::Artists', type: :request do
       end
     end
 
-    context 'Quando o payload não for valido' do
-      # Requisião com com payload invalido. Está sem o gênero do artista.
+    context 'Quando o payload não for válido' do
+      # Requisião com com payload inválido. Está sem o gênero do artista.
       before { post '/api/v1/artists', as: :json, params: { name: 'Test Artist' } }
 
       it 'returna status code 422' do
@@ -87,4 +87,31 @@ RSpec.describe 'Api::V1::Artists', type: :request do
       end
     end
   end
+
+  # Suíte de testes para PUT /api/v1/artists/:id
+  describe 'PUT /api/v1/artists/:id' do
+    let(:valid_payload) { { genre: 'Samba' } }
+
+    context 'Quando existir registro' do
+      before { put "/api/v1/artists/#{artist_id}",  as: :json, params: valid_payload }
+
+      it 'Atualiza o registro' do
+        expect(json['genre']).to eq('Samba')
+      end
+
+      it 'retorna status code 200' do
+        expect(response).to have_http_status(200)
+      end
+    end
+  end
+
+  # Suíte de testes para DELETE /api/v1/artists/:id
+  describe 'DELETE /api/v1/artists/:id' do
+    before { delete "/api/v1/artists/#{artist_id}" }
+
+    it 'retorna status code 204' do
+      expect(response).to have_http_status(204)
+    end
+  end
+
 end
