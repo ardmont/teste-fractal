@@ -12,7 +12,13 @@ class Api::V1::AlbumsController < ApplicationController
 
   # GET /api/v1/albums/1
   def show
-    render json: @album
+    # Converte o objeto @album em json
+    @album_as_json = @album.as_json
+
+    # Adiciona o artista do álbum ao json que será enviado
+    @album_as_json["artist"] = @album.artist
+
+    render json: @album_as_json
   end
 
   # POST /api/v1/albums
@@ -51,7 +57,7 @@ class Api::V1::AlbumsController < ApplicationController
   private
     # Procura e cria a variável do Album com o id informado
     def set_album
-      @album = Album.find(params[:id])
+      @album = Album.includes(:artist).find(params[:id])
     end
 
     # Procura e cria a variável do Artist com o id informado pelo parâmetro artist_id
