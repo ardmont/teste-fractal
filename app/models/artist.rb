@@ -1,4 +1,5 @@
 class Artist < ApplicationRecord
   has_many :albums
-  validates :name, :genre, presence: true
+  belongs_to :genre
+  validates :name, presence: true
 end
