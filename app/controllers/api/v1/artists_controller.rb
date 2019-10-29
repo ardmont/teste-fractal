@@ -3,7 +3,8 @@ class Api::V1::ArtistsController < ApplicationController
 
   # GET /api/v1/artists
   api :GET, '/api/v1/artists', 'lista todos os artistas'
-  #param :id, :string, desc: 'Nome do artista'
+  param :nome, String, desc: 'nome do artista'
+  param :genre_id, String, desc: 'id do gênero do artista'
   def index
     # Armazena as condições da consulta que serão passadas, como parâmetros, pela requisição
     query_conditions = {}
@@ -34,6 +35,7 @@ class Api::V1::ArtistsController < ApplicationController
 
   # GET /api/v1/artists/:id
   api :GET, '/api/v1/artists/:id', 'lista um artista específico'
+  param :id, :number, desc: 'id do artista', required: true
   def show
     # Serializa o objeto artist para posteriormente adicionar os álbums e os gêneros do artista na resposta
     artist_as_json = @artist.as_json
@@ -48,7 +50,9 @@ class Api::V1::ArtistsController < ApplicationController
   end
 
   # POST /api/v1/artists
-  api :POST, '/api/v1/artists/:id', 'cria um artista'
+  api :POST, '/api/v1/artists', 'cria um artista'
+  param :name, String, desc: 'nome do artista', required: true
+  param :genre_id, Numeric, desc: 'id do gênero do artista', required: true
   def create
     # Cria um novo artista e o associa ao genênero informado
     @artist = Artist.new(artist_params)
@@ -61,7 +65,10 @@ class Api::V1::ArtistsController < ApplicationController
   end
 
   # PATCH/PUT /api/v1/artists/:id
-  api :POST, '/api/v1/artists/:id', 'atualiza um artista'
+  api :PUT, '/api/v1/artists/:id', 'atualiza um artista'
+  param :id, :number, desc: 'id do artista', required: true
+  param :name, String, desc: 'nome do artista'
+  param :genre_id, Numeric, desc: 'id do gênero do artista'
   def update
     if @artist.update(artist_params)
       render json: @artist
@@ -71,7 +78,8 @@ class Api::V1::ArtistsController < ApplicationController
   end
 
   # DELETE /api/v1/artists/:id
-  api :POST, '/api/v1/artists/:id', 'remove um artista'
+  api :DEL, '/api/v1/artists/:id', 'remove um artista'
+  param :id, :number, desc: 'id do artista', required: true
   def destroy
     @artist.destroy
   end
