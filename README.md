@@ -44,7 +44,7 @@ Dentro do ambente selecionado, execute o comando `rails db:seed`. Isto fará com
 ### Teste
 Dentro do ambente selecionado, execute o comando `bundle exec rspec`
 
-## Utiização
+## Utilização
 A documentação dos endpoints foi criada com a biblioteca apipie, e pode ser vizualizada acessando [http://localhost:3000](http://localhost:3000)
 
 OBS: Os parâmetros enviados para os endpoints POST e PUT devem estar no formato json, no body da requisição. Exceto pelo parâmetro id, que fará parte da uri da requisição.
