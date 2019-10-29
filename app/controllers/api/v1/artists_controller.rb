@@ -4,7 +4,7 @@ class Api::V1::ArtistsController < ApplicationController
   # GET /api/v1/artists
   def index
     # Busca todos os artistas, com paginação de 30 elementos por página e faz eager loading com Albums
-    artists = Artist.includes(:albums).paginate(page: params[:page], per_page: 30)
+    artists = Artist.includes(:albums, :genre).paginate(page: params[:page], per_page: 30)
 
     # Este array armazenará os artistas e será utilizado como resposta
     response = []
@@ -15,6 +15,9 @@ class Api::V1::ArtistsController < ApplicationController
 
       # Adiciona os álbums do artista ao json que será enviado
       artist_as_json["albums"] = artist.albums
+
+      # Adiciona o gênero do artista ao json que será enviado
+      artist_as_json["genre"] = artist.genre
 
       response << artist_as_json
     end
@@ -29,7 +32,10 @@ class Api::V1::ArtistsController < ApplicationController
 
     # Adiciona os álbums do artista ao json que será enviado
     artist_as_json["albums"] = @artist.albums
-    
+
+    # Adiciona o gênero do artista ao json que será enviado
+    artist_as_json["genre"] = @artist.genre
+
     render json: artist_as_json
   end
 
@@ -62,7 +68,7 @@ class Api::V1::ArtistsController < ApplicationController
   private
     # Procura e cria a variável do Artist com o id informado, e faz eager loading de Album
     def set_artist
-      @artist = Artist.includes(:albums).find(params[:id])
+      @artist = Artist.includes(:albums, :genre).find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.

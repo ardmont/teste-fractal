@@ -6,7 +6,7 @@ class Api::V1::AlbumsController < ApplicationController
   # GET /api/v1/albums
   def index
     # Busca todos os álbums, com paginação de 30 elementos por página e faz eager loading com Artist e Music
-    albums = Album.includes(:artist, :musics).paginate(page: params[:page], per_page: 30)
+    albums = Album.includes(:artist, :musics, :genre).paginate(page: params[:page], per_page: 30)
 
     # Este array armazenará os álbums e será utilizado como resposta
     response = []
@@ -21,6 +21,9 @@ class Api::V1::AlbumsController < ApplicationController
       # Adiciona as musicas do álbum ao json que será enviado
       album_as_json["musics"] = album.musics.as_json
 
+      # Adiciona o gênero do álbum ao json que será enviado
+      album_as_json["genre"] = album.genre
+
       response << album_as_json
     end
 
@@ -30,15 +33,18 @@ class Api::V1::AlbumsController < ApplicationController
   # GET /api/v1/albums/:id
   def show
     # Serializa o objeto album para posteriormente adicionar artist e musics
-    @album_as_json = @album.as_json
+    album_as_json = @album.as_json
 
     # Adiciona o artista do álbum ao json que será enviado
-    @album_as_json["artist"] = @album.artist
+    album_as_json["artist"] = @album.artist
 
     # Adiciona as musicas do álbum ao json que será enviado
-    @album_as_json["musics"] = @album.musics.as_json
+    album_as_json["musics"] = @album.musics.as_json
 
-    render json: @album_as_json
+    # Adiciona o gênero do álbum ao json que será enviado
+    album_as_json["genre"] = @album.genre
+
+    render json: album_as_json
   end
 
   # POST /api/v1/albums
@@ -83,7 +89,7 @@ class Api::V1::AlbumsController < ApplicationController
   private
     # Procura e cria a variável do Album com o id informado, com eager loading de Artist e Music
     def set_album
-      @album = Album.includes(:artist, :musics).find(params[:id])
+      @album = Album.includes(:artist, :musics, :genre).find(params[:id])
     end
 
     # Procura e cria a variável do Artist com o id informado pelo parâmetro artist_id
