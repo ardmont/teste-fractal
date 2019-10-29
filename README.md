@@ -38,7 +38,8 @@ Dentro do ambente selecionado, execute o comando `rails db:migrate`
 Dentro do ambente selecionado, execute o comando `rails db:seed`. Isto fará com que o banco seja populado com amostras aleatórias, criadas pela biblioteca faker.
 
 ### Execução
-Dentro do ambente selecionado, execute o comando `rails s`
+* Com docker: Execute o comando `docker compose up`
+* Sem docker: Execute o comando `rails s`
 
 ### Teste
 Dentro do ambente selecionado, execute o comando `bundle exec rspec`
