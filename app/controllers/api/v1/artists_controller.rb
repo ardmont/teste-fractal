@@ -10,7 +10,7 @@ class Api::V1::ArtistsController < ApplicationController
     response = []
 
     artists.each do |artist|
-      # Serializa o objeto artist para posteriormente adicionar os álbums do artista
+      # Serializa o objeto artist para posteriormente adicionar os álbums e os gêneros do artista na resposta
       artist_as_json = artist.as_json
 
       # Adiciona os álbums do artista ao json que será enviado
@@ -27,7 +27,7 @@ class Api::V1::ArtistsController < ApplicationController
 
   # GET /api/v1/artists/:id
   def show
-    # Serializa o objeto artist para posteriormente adicionar os álbums do artista
+    # Serializa o objeto artist para posteriormente adicionar os álbums e os gêneros do artista na resposta
     artist_as_json = @artist.as_json
 
     # Adiciona os álbums do artista ao json que será enviado
