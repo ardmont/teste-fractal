@@ -1,5 +1,4 @@
 class Api::V1::AlbumsController < ApplicationController
-  before_action :set_artist, only: :create
   before_action :set_musics, only: [:create, :update]
   before_action :set_album, only: [:show, :update, :destroy]
 
@@ -67,7 +66,7 @@ class Api::V1::AlbumsController < ApplicationController
   param :add_musics, Array, desc: 'músicas a serem adicionadas no álbum'
   def create
     # Cria um novo Album e passa o objeto do artist encontrado como valor para o campo artist
-    @album = Album.new(album_params.merge({artist: @artist}))
+    @album = Album.new(album_params)
 
     # Verifica se existem musicas a serem adicionadas, e as vincula ao álbum
     if(defined?(@musics)) then @album.musics << @musics end
@@ -116,11 +115,6 @@ class Api::V1::AlbumsController < ApplicationController
     # Procura e cria a variável do Album com o id informado, com eager loading de Artist e Music
     def set_album
       @album = Album.includes(:artist, :musics, :genre).find(params[:id])
-    end
-
-    # Procura e cria a variável do Artist com o id informado pelo parâmetro artist_id
-    def set_artist
-      @artist = Artist.find(params[:artist_id])
     end
 
     # Verifica se existem musicas apra serem adicionadas, e inicia a variável musics
