@@ -6,7 +6,7 @@ RSpec.describe 'Api::V1::Artists', type: :request do
   let(:genre_id) { genres.sample.id } # Pega um gênero aleatório para ser associado ao artista
   let!(:artists) { create_list(:artist, 45) } # Cria 45 artistas
   let(:artist_sample) { artists.first } # Pega o primeiro artista para ser usado como amostra nos testes
-  let(:artist_id) { artists.first.id }
+  let(:artist_sample_id) { artist_sample.id }
 
   # Suíte de testes para GET /api/v1/artists
   describe 'GET /api/v1/artists' do
@@ -71,12 +71,12 @@ RSpec.describe 'Api::V1::Artists', type: :request do
 
   # Suíte de testes para GET /api/v1/artists/:id
   describe 'GET /api/v1/artists/:id' do
-    before { get "/api/v1/artists/#{artist_id}" }
+    before { get "/api/v1/artists/#{artist_sample_id}" }
 
     context 'Quando existir registro' do
       it 'retorna o artista' do
         expect(json).not_to be_empty
-        expect(json['id']).to eq(artist_id)
+        expect(json['id']).to eq(artist_sample_id)
       end
 
       it 'retorna status code 200' do
@@ -85,7 +85,7 @@ RSpec.describe 'Api::V1::Artists', type: :request do
     end
 
     context 'Quando não existir registro' do
-      let(:artist_id) { 100 }
+      let(:artist_sample_id) { 100 }
 
       it 'retorna status code 404' do
         expect(response).to have_http_status(404)
@@ -125,7 +125,7 @@ RSpec.describe 'Api::V1::Artists', type: :request do
     let(:valid_payload) { { name: 'New name' } }
 
     context 'Quando existir registro' do
-      before { put "/api/v1/artists/#{artist_id}",  as: :json, params: valid_payload }
+      before { put "/api/v1/artists/#{artist_sample_id}",  as: :json, params: valid_payload }
 
       it 'Atualiza o registro' do
         expect(json['name']).to eq('New name')
@@ -139,7 +139,7 @@ RSpec.describe 'Api::V1::Artists', type: :request do
 
   # Suíte de testes para DELETE /api/v1/artists/:id
   describe 'DELETE /api/v1/artists/:id' do
-    before { delete "/api/v1/artists/#{artist_id}" }
+    before { delete "/api/v1/artists/#{artist_sample_id}" }
 
     it 'retorna status code 204' do
       expect(response).to have_http_status(204)
