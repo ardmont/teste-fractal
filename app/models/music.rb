@@ -1,4 +1,5 @@
 class Music < ApplicationRecord
   has_and_belongs_to_many :albums
-  validates :title, :duration, :genre, presence: true
+  belongs_to :genre
+  validates :title, :duration, presence: true
 end

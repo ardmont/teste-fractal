@@ -43,9 +43,10 @@ ActiveRecord::Schema.define(version: 2019_10_28_232844) do
   create_table "musics", force: :cascade do |t|
     t.string "title"
     t.integer "duration"
-    t.string "genre"
+    t.integer "genre_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["genre_id"], name: "index_musics_on_genre_id"
   end
 
 end
