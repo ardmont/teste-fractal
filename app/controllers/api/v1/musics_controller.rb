@@ -2,6 +2,9 @@ class Api::V1::MusicsController < ApplicationController
   before_action :set_music, only: [:show, :update, :destroy]
 
   # GET /api/v1/musics
+  api :GET, '/api/v1/musics', 'lista todas as músicas'
+  param :title, String, desc: 'título da música'
+  param :genre_id, String, desc: 'id do gênero do música'
   def index
     # Armazena as condições da consulta que serão passadas, como parâmetros, pela requisição
     query_conditions = {}
@@ -31,6 +34,8 @@ class Api::V1::MusicsController < ApplicationController
   end
 
   # GET /api/v1/musics/:id
+  api :GET, '/api/v1/musics/:id', 'lista uma música específica'
+  param :id, :number, desc: 'id da musica', required: true
   def show
     # Serializa o objeto music para posteriormente adicionar os álbums relacionados a música
     music_as_json = @music.as_json
@@ -45,6 +50,9 @@ class Api::V1::MusicsController < ApplicationController
   end
 
   # POST /api/v1/musics
+  api :POST, '/api/v1/musics', 'Cria uma música'
+  param :title, String, desc: 'título da música', required: true
+  param :genre_id, Numeric, desc: 'id do gênero do música', required: true 
   def create
     @music = Music.new(music_params)
 
@@ -56,6 +64,10 @@ class Api::V1::MusicsController < ApplicationController
   end
 
   # PATCH/PUT /api/v1/musics/:id
+  api :PUT, '/api/v1/musics/:id', 'atualiza uma música'
+  param :id, :number, desc: 'id da musica', required: true
+  param :title, String, desc: 'título da música'
+  param :genre_id, Numeric, desc: 'id do gênero do música'
   def update
     if @music.update(music_params)
       render json: @music
@@ -65,6 +77,8 @@ class Api::V1::MusicsController < ApplicationController
   end
 
   # DELETE /api/v1/musics/:id
+  api :DEL, '/api/v1/musics/:id', 'remove uma música'
+  param :id, :number, desc: 'id da música', required: true
   def destroy
     @music.destroy
   end

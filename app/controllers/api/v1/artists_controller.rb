@@ -3,7 +3,7 @@ class Api::V1::ArtistsController < ApplicationController
 
   # GET /api/v1/artists
   api :GET, '/api/v1/artists', 'lista todos os artistas'
-  param :nome, String, desc: 'nome do artista'
+  param :name, String, desc: 'name do artista'
   param :genre_id, String, desc: 'id do gênero do artista'
   def index
     # Armazena as condições da consulta que serão passadas, como parâmetros, pela requisição
