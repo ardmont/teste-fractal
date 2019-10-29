@@ -35,6 +35,7 @@ class Api::V1::ArtistsController < ApplicationController
 
   # POST /api/v1/artists
   def create
+    # Cria um novo artista e o associa ao genênero informado
     @artist = Artist.new(artist_params)
 
     if @artist.save
@@ -66,6 +67,6 @@ class Api::V1::ArtistsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def artist_params
-      params.fetch(:artist, {}).permit(:name, :genre)
+      params.fetch(:artist, {}).permit(:name, :genre_id)
     end
 end
