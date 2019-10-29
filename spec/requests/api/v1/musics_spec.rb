@@ -4,8 +4,8 @@ RSpec.describe "Api::V1::Musics", type: :request do
   # Inicia os dados de teste utilizando a factory criada pelo factory_bot
   let!(:genres) { create_list(:genre, 10) } # Cria 10 gêneros
   let(:genre_id) { genres.sample.id } # Pega um gênero aleatório para ser associado ao artista
-  let!(:musics) { create_list(:music, 45) }
-  let(:music_sample) { musics.first }
+  let!(:musics) { create_list(:music, 45) } # Cria 4 músicas
+  let(:music_sample) { musics.first } # Pega a primeiro música para ser usada como amostra nos testes
   let(:music_sample_id) { music_sample.id }
 
   # Suíte de testes para GET /api/v1/musics
