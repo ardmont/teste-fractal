@@ -5,7 +5,7 @@ class Api::V1::MusicsController < ApplicationController
   def index
     # Armazena as condições da consulta que serão passadas, como parâmetros, pela requisição
     query_conditions = {}
-    if(params[:title].present?) then query_conditions[:name] = params[:name] end
+    if(params[:title].present?) then query_conditions[:title] = params[:title] end
     if(params[:genre_id].present?) then query_conditions[:genre_id] = params[:genre_id] end
 
     # Busca todos as musicas, com paginação de 30 elementos por página e faz eager loading com Albums
