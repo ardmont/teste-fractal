@@ -4,7 +4,8 @@ RSpec.describe 'Api::V1::Artists', type: :request do
   # Inicia os dados de teste utilizando a factory criada pelo factory_bot
   let!(:genres) { create_list(:genre, 10) } # Cria 10 gêneros
   let(:genre_id) { genres.sample.id } # Pega um gênero aleatório para ser associado ao artista
-  let!(:artists) { create_list(:artist, 45) }
+  let!(:artists) { create_list(:artist, 45) } # Cria 45 artistas
+  let(:artist_sample) { artists.first } # Pega o primeiro artista para ser usado como amostra nos testes
   let(:artist_id) { artists.first.id }
 
   # Suíte de testes para GET /api/v1/artists
@@ -13,13 +14,13 @@ RSpec.describe 'Api::V1::Artists', type: :request do
       # Faz requisições GET HTTP antes de cada exemplo
       before { get '/api/v1/artists' }
 
-      it 'Retorna lista de artistas sem paginação' do
+      it 'retorna lista de artistas após consulta sem paginação' do
         # `json` é um helper que converte o corpo das respostas em json
         expect(json).not_to be_empty
         expect(json.size).to eq(30)
       end
 
-      it 'Retorna status code 200 sem paginação' do
+      it 'retorna status code 200 após consulta sem paginação' do
         expect(response).to have_http_status(200)
       end
     end
@@ -28,13 +29,41 @@ RSpec.describe 'Api::V1::Artists', type: :request do
       # Faz requisições GET HTTP antes de cada exemplo
       before { get '/api/v1/artists?page=2' }
 
-      it 'Retorna lista de artistas com paginação' do
+      it 'retorna lista de artistas após consulta com paginação' do
         # `json` é um helper que converte o corpo das respostas em json
         expect(json).not_to be_empty
         expect(json.size).to eq(15)
       end
 
-      it 'Retorna status code 200 com paginação' do
+      it 'retorna status code 200 após consulta com paginação' do
+        expect(response).to have_http_status(200)
+      end
+    end
+
+    context 'GET /api/v1/artists?name=[name]' do 
+      # Faz requisições GET HTTP antes de cada exemplo
+      before { get "/api/v1/artists?name=#{artist_sample.name}" }
+      
+      it 'retorna o artista pelo nome especificado' do
+        expect(json).not_to be_empty
+        expect(json[0]['name']).to eq(artist_sample.name)
+      end
+
+      it 'retorna status code 200 após consulta por nome' do
+        expect(response).to have_http_status(200)
+      end
+    end
+
+    context 'GET /api/v1/artists?genre_id=[genre_id]' do 
+      # Faz requisições GET HTTP antes de cada exemplo
+      before { get "/api/v1/artists?genre_id=#{artist_sample.genre_id}" }
+      
+      it 'retorna os artistas pelo gênero especificado' do
+        expect(json).not_to be_empty
+        expect(json[0]['genre_id']).to eq(artist_sample.genre_id)
+      end
+
+      it 'retorna status code 200 após consulta por gênero' do
         expect(response).to have_http_status(200)
       end
     end
@@ -72,7 +101,7 @@ RSpec.describe 'Api::V1::Artists', type: :request do
     context 'Quando o payload for válido' do
       before { post '/api/v1/artists', as: :json, params: valid_payload }
 
-      it 'Cria um artista' do
+      it 'cria um artista' do
         expect(json['name']).to eq('Test Artist')
       end
 
