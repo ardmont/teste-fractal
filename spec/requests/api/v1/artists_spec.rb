@@ -5,7 +5,7 @@ RSpec.describe 'Api::V1::Artists', type: :request do
   let!(:genres) { create_list(:genre, 10) } # Cria 10 gêneros
   let(:genre_id) { genres.sample.id } # Pega um gênero aleatório para ser associado ao artista
   let!(:artists) { create_list(:artist, 45) } # Cria 45 artistas
-  let(:artist_sample) { artists.first } # Pega o primeiro artista para ser usado como amostra nos testes
+  let(:artist_sample) { artists.sample } # Pega um artista aleatório para ser usado como amostra nos testes
   let(:artist_sample_id) { artist_sample.id }
 
   # Suíte de testes para GET /api/v1/artists

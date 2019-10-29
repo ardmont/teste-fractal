@@ -5,7 +5,7 @@ RSpec.describe "Api::V1::Musics", type: :request do
   let!(:genres) { create_list(:genre, 10) } # Cria 10 gêneros
   let(:genre_id) { genres.sample.id } # Pega um gênero aleatório para ser associado à musica
   let!(:musics) { create_list(:music, 45) } # Cria 45 músicas
-  let(:music_sample) { musics.first } # Pega a primeira música para ser usada como amostra nos testes
+  let(:music_sample) { musics.sample } # Pega uma música aleatória para ser usada como amostra nos testes
   let(:music_sample_id) { music_sample.id }
 
   # Suíte de testes para GET /api/v1/musics
@@ -49,7 +49,7 @@ RSpec.describe "Api::V1::Musics", type: :request do
         expect(json[0]['title']).to eq(music_sample.title)
       end
 
-      it 'retorna status code 200 após consulta por nome' do
+      it 'retorna status code 200 após consulta por título' do
         expect(response).to have_http_status(200)
       end
     end
