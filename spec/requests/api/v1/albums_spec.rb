@@ -7,7 +7,7 @@ RSpec.describe "Api::V1::Albums", type: :request do
   let!(:artists) { create_list(:artist, 10) } # Cria 10 artistas
   let(:artist_id) { artists.sample.id } # Pega um artista aleatório para ser usado no álbum
   let!(:albums) { create_list(:album, 45, artist_id: artist_id) } # Cria 45 álbums
-  let(:album_sample) { artists.first } # Pega o primeiro álbum para ser usado como amostra nos testes
+  let(:album_sample) { albums.sample } # Pega um álbum aleatório para ser usado como amostra nos testes
   let(:album_sample_id) { album_sample.id } # Pega o id do primeiro álbum da lista
 
   # Suíte de testes para GET /api/v1/albums
@@ -38,6 +38,48 @@ RSpec.describe "Api::V1::Albums", type: :request do
       end
 
       it 'Retorna status code 200 com paginação' do
+        expect(response).to have_http_status(200)
+      end
+    end
+
+    context 'GET /api/v1/albums?title=[title]' do 
+      # Faz requisições GET HTTP antes de cada exemplo
+      before { get "/api/v1/albums?title=#{album_sample.title}" }
+      
+      it 'retorna o álbum pelo título especificado' do
+        expect(json).not_to be_empty
+        expect(json[0]['title']).to eq(album_sample.title)
+      end
+
+      it 'retorna status code 200 após consulta por título' do
+        expect(response).to have_http_status(200)
+      end
+    end
+
+    context 'GET /api/v1/albums?genre_id=[genre_id]' do 
+      # Faz requisições GET HTTP antes de cada exemplo
+      before { get "/api/v1/albums?genre_id=#{album_sample.genre_id}" }
+      
+      it 'retorna os álbums pelo gênero especificado' do
+        expect(json).not_to be_empty
+        expect(json[0]['genre_id']).to eq(album_sample.genre_id)
+      end
+
+      it 'retorna status code 200 após consulta por gênero' do
+        expect(response).to have_http_status(200)
+      end
+    end
+
+    context 'GET /api/v1/albums?artist_id=[artist_id]' do 
+      # Faz requisições GET HTTP antes de cada exemplo
+      before { get "/api/v1/albums?artist_id=#{album_sample.artist_id}" }
+      
+      it 'retorna as álbums pelo artista especificado' do
+        expect(json).not_to be_empty
+        expect(json[0]['artist_id']).to eq(album_sample.artist_id)
+      end
+
+      it 'retorna status code 200 após consulta por artista' do
         expect(response).to have_http_status(200)
       end
     end
