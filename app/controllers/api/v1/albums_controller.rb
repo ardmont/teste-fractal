@@ -64,6 +64,7 @@ class Api::V1::AlbumsController < ApplicationController
   param :title, String, desc: 'título do álbum', required: true
   param :genre_id, Numeric, desc: 'id do gênero do álbum', required: true
   param :artist_id, Numeric, desc: 'id do artista do álbum', required: true
+  param :add_musics, Array, desc: 'músicas a serem adicionadas no álbum'
   def create
     # Cria um novo Album e passa o objeto do artist encontrado como valor para o campo artist
     @album = Album.new(album_params.merge({artist: @artist}))
@@ -84,6 +85,8 @@ class Api::V1::AlbumsController < ApplicationController
   param :title, String, desc: 'título do álbum'
   param :genre_id, Numeric, desc: 'id do gênero do álbum'
   param :artist_id, Numeric, desc: 'id do artista do álbum'
+  param :add_musics, Array, desc: 'músicas a serem adicionadas no álbum'
+  param :remove_musics, Array, desc: 'músicas a serem removidas no álbum'
   def update
     # Verifica se existem musicas a serem adicionadas, e as vincula ao álbum
     if(defined?(@musics)) then @album.musics << @musics end
