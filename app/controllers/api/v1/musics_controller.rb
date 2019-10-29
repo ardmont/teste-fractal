@@ -66,6 +66,6 @@ class Api::V1::MusicsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def music_params
-      params.fetch(:music, {}).permit(:title, :duration, :genre)
+      params.fetch(:music, {}).permit(:title, :duration, :genre_id)
     end
 end

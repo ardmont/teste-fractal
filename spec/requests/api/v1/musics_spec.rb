@@ -2,6 +2,8 @@ require 'rails_helper'
 
 RSpec.describe "Api::V1::Musics", type: :request do
   # Inicia os dados de teste utilizando a factory criada pelo factory_bot
+  let!(:genres) { create_list(:genre, 10) } # Cria 10 gêneros
+  let(:genre_id) { genres.sample.id } # Pega um gênero aleatório para ser associado ao artista
   let!(:musics) { create_list(:music, 45) }
   let(:music_id) { musics.first.id }
 
@@ -65,7 +67,7 @@ RSpec.describe "Api::V1::Musics", type: :request do
   # Suíte de testes para POST /api/v1/musics
   describe 'POST /api/v1/musics' do
     # Payload válido
-    let(:valid_payload) { { title: 'Test Music', genre: 'Rock', duration: 350 } }
+    let(:valid_payload) { { title: 'Test Music', genre_id: genre_id, duration: 350 } }
 
     context 'Quando o payload for válido' do
       before { post '/api/v1/musics', as: :json, params: valid_payload }
@@ -80,8 +82,8 @@ RSpec.describe "Api::V1::Musics", type: :request do
     end
 
     context 'Quando o payload não for válido' do
-      # Requisião com com payload inválido. Está sem o gênero da musica.
-      before { post '/api/v1/musics', as: :json, params: { title: 'Test Music', duration: 350 } }
+      # Requisião com com payload inválido. Está sem o título da musica.
+      before { post '/api/v1/musics', as: :json, params: { genre_id: genre_id, duration: 350 } }
 
       it 'retorna status code 422' do
         expect(response).to have_http_status(422)
@@ -91,13 +93,13 @@ RSpec.describe "Api::V1::Musics", type: :request do
 
   # Suíte de testes para PUT /api/v1/musics/:id
   describe 'PUT /api/v1/musics/:id' do
-    let(:valid_payload) { { genre: 'Samba' } }
+    let(:valid_payload) { { title: 'New title' } }
 
     context 'Quando existir registro' do
       before { put "/api/v1/musics/#{music_id}",  as: :json, params: valid_payload }
 
       it 'Atualiza o registro' do
-        expect(json['genre']).to eq('Samba')
+        expect(json['title']).to eq('New title')
       end
 
       it 'retorna status code 200' do
