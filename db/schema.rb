@@ -14,11 +14,12 @@ ActiveRecord::Schema.define(version: 2019_10_28_232844) do
 
   create_table "albums", force: :cascade do |t|
     t.string "title"
-    t.string "genre"
+    t.integer "genre_id"
     t.integer "artist_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["artist_id"], name: "index_albums_on_artist_id"
+    t.index ["genre_id"], name: "index_albums_on_genre_id"
   end
 
   create_table "albums_musics", id: false, force: :cascade do |t|

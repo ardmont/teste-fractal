@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :album do
     title { Faker::Music.album }
-    genre { Faker::Music.genre }
+    genre { FactoryBot.create :genre }
   end
 end

@@ -2,6 +2,8 @@ require 'rails_helper'
 
 RSpec.describe "Api::V1::Albums", type: :request do
   # Inicia os dados de teste utilizando as factories criadas pelo factory_bot
+  let!(:genres) { create_list(:genre, 10) } # Cria 10 gêneros
+  let(:genre_id) { genres.sample.id } # Pega um gênero aleatório para ser associado ao álbum
   let!(:artists) { create_list(:artist, 10) } # Cria 10 artistas
   let(:artist_id) { artists.sample.id } # Pega um artista aleatório para ser usado no álbum
   let!(:albums) { create_list(:album, 45, artist_id: artist_id) } # Cria 45 álbums
@@ -67,7 +69,7 @@ RSpec.describe "Api::V1::Albums", type: :request do
   # Suíte de testes para POST /api/v1/albums
   describe 'POST /api/v1/albums' do
     # Payload válido
-    let(:valid_payload) { { title: 'Test Album', genre: 'Rock', artist_id: artist_id } }
+    let(:valid_payload) { { title: 'Test Album', genre_id: genre_id, artist_id: artist_id } }
 
     context 'Quando o payload for válido' do
       before { post '/api/v1/albums', as: :json, params: valid_payload }
@@ -82,8 +84,8 @@ RSpec.describe "Api::V1::Albums", type: :request do
     end
 
     context 'Quando o payload não for válido' do
-      # Requisião com com payload inválido. Está sem o gênero do album.
-      before { post '/api/v1/albums', as: :json, params: { title: 'Test Album', artist_id: artist_id } }
+      # Requisião com com payload inválido. Está sem o título do album.
+      before { post '/api/v1/albums', as: :json, params: { genre_id: genre_id, artist_id: artist_id } }
 
       it 'retorna status code 422' do
         expect(response).to have_http_status(422)
@@ -93,13 +95,13 @@ RSpec.describe "Api::V1::Albums", type: :request do
 
   # Suíte de testes para PUT /api/v1/albums/:id
   describe 'PUT /api/v1/albums/:id' do
-    let(:valid_payload) { { genre: 'Samba' } }
+    let(:valid_payload) { { title: 'New title' } }
 
     context 'Quando existir registro' do
       before { put "/api/v1/albums/#{album_id}",  as: :json, params: valid_payload }
 
       it 'Atualiza o registro' do
-        expect(json['genre']).to eq('Samba')
+        expect(json['title']).to eq('New title')
       end
 
       it 'retorna status code 200' do
