@@ -7,7 +7,8 @@ RSpec.describe "Api::V1::Albums", type: :request do
   let!(:artists) { create_list(:artist, 10) } # Cria 10 artistas
   let(:artist_id) { artists.sample.id } # Pega um artista aleatório para ser usado no álbum
   let!(:albums) { create_list(:album, 45, artist_id: artist_id) } # Cria 45 álbums
-  let(:album_id) { albums.first.id } # Pega o id do primeiro álbum da lista
+  let(:album_sample) { artists.first } # Pega o primeiro álbum para ser usado como amostra nos testes
+  let(:album_sample_id) { album_sample.id } # Pega o id do primeiro álbum da lista
 
   # Suíte de testes para GET /api/v1/albums
   describe 'GET /api/v1/albums' do
@@ -44,12 +45,12 @@ RSpec.describe "Api::V1::Albums", type: :request do
 
   # Suíte de testes para GET /api/v1/albums/:id
   describe 'GET /api/v1/albums/:id' do
-    before { get "/api/v1/albums/#{album_id}" }
+    before { get "/api/v1/albums/#{album_sample_id}" }
 
     context 'Quando existir registro' do
       it 'retorna o álbum' do
         expect(json).not_to be_empty
-        expect(json['id']).to eq(album_id)
+        expect(json['id']).to eq(album_sample_id)
       end
 
       it 'retorna status code 200' do
@@ -58,7 +59,7 @@ RSpec.describe "Api::V1::Albums", type: :request do
     end
 
     context 'Quando não existir registro' do
-      let(:album_id) { 100 }
+      let(:album_sample_id) { 100 }
 
       it 'retorna status code 404' do
         expect(response).to have_http_status(404)
@@ -98,7 +99,7 @@ RSpec.describe "Api::V1::Albums", type: :request do
     let(:valid_payload) { { title: 'New title' } }
 
     context 'Quando existir registro' do
-      before { put "/api/v1/albums/#{album_id}",  as: :json, params: valid_payload }
+      before { put "/api/v1/albums/#{album_sample_id}",  as: :json, params: valid_payload }
 
       it 'Atualiza o registro' do
         expect(json['title']).to eq('New title')
@@ -112,7 +113,7 @@ RSpec.describe "Api::V1::Albums", type: :request do
 
   # Suíte de testes para DELETE /api/v1/albums/:id
   describe 'DELETE /api/v1/albums/:id' do
-    before { delete "/api/v1/albums/#{album_id}" }
+    before { delete "/api/v1/albums/#{album_sample_id}" }
 
     it 'retorna status code 204' do
       expect(response).to have_http_status(204)
