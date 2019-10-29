@@ -3,8 +3,13 @@ class Api::V1::ArtistsController < ApplicationController
 
   # GET /api/v1/artists
   def index
+    # Armazena as condições da consulta que serão passadas, como parâmetros, pela requisição
+    query_conditions = {}
+    if(params[:name].present?) then query_conditions[:name] = params[:name] end
+    if(params[:genre_id].present?) then query_conditions[:genre_id] = params[:genre_id] end
+
     # Busca todos os artistas, com paginação de 30 elementos por página e faz eager loading com Albums
-    artists = Artist.includes(:albums, :genre).paginate(page: params[:page], per_page: 30)
+    artists = Artist.includes(:albums, :genre).where(query_conditions).paginate(page: params[:page], per_page: 30)
 
     # Este array armazenará os artistas e será utilizado como resposta
     response = []
