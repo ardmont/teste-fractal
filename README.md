@@ -22,6 +22,27 @@ Este projeto consiste em uma API criada em ruby on rails, que fornece e gerênci
 * shoulda-matchers
 * will_paginate
 
+## Instalação e execução
+
+### Instalação com docker (container)
+Clone o repositório e execute os comandos `docker compose build`
+
+### Instalação direta
+É necessário ter o sqlite3 instalado no sistema operacional.
+Clone o repositório e execute o comando `bundle install`
+
+### Preparação do banco
+Dentro do ambente selecionado, execute o comando `rails db:migrate`
+
+### População do banco com amostras
+Dentro do ambente selecionado, execute o comando `rails db:seed`. Isto fará com que o banco seja populado com amostras aleatórias, criadas pela biblioteca faker.
+
+### Execução
+Dentro do ambente selecionado, execute o comando `rails s`
+
+### Teste
+Dentro do ambente selecionado, execute o comando `bundle exec rspec`
+
 ## Utiização
 A documentação dos endpoints foi criada com a biblioteca apipie, e pode ser vizualizada acessando [http://localhost:3000](http://localhost:3000)
 
