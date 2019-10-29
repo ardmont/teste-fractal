@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe "Api::V1::Musics", type: :request do
   # Inicia os dados de teste utilizando a factory criada pelo factory_bot
   let!(:genres) { create_list(:genre, 10) } # Cria 10 gêneros
-  let(:genre_id) { genres.sample.id } # Pega um gênero aleatório para ser associado ao artista
-  let!(:musics) { create_list(:music, 45) } # Cria 4 músicas
+  let(:genre_id) { genres.sample.id } # Pega um gênero aleatório para ser associado à musica
+  let!(:musics) { create_list(:music, 45) } # Cria 45 músicas
   let(:music_sample) { musics.first } # Pega a primeira música para ser usada como amostra nos testes
   let(:music_sample_id) { music_sample.id }
 
@@ -63,6 +63,35 @@ RSpec.describe "Api::V1::Musics", type: :request do
         expect(response).to have_http_status(404)
       end
     end
+
+    context 'GET /api/v1/musics?title=[title]' do 
+      # Faz requisições GET HTTP antes de cada exemplo
+      before { get "/api/v1/musics?title=#{music_sample.title}" }
+      
+      it 'retorna a musica pelo título especificado' do
+        expect(json).not_to be_empty
+        expect(json[0]['title']).to eq(music_sample.title)
+      end
+
+      it 'retorna status code 200 após consulta por nome' do
+        expect(response).to have_http_status(200)
+      end
+    end
+
+    context 'GET /api/v1/musics?genre_id=[genre_id]' do 
+      # Faz requisições GET HTTP antes de cada exemplo
+      before { get "/api/v1/musics?genre_id=#{music_sample.genre_id}" }
+      
+      it 'retorna as musicas pelo gênero especificado' do
+        expect(json).not_to be_empty
+        expect(json[0]['genre_id']).to eq(music_sample.genre_id)
+      end
+
+      it 'retorna status code 200 após consulta por gênero' do
+        expect(response).to have_http_status(200)
+      end
+    end
+
   end
 
   # Suíte de testes para POST /api/v1/musics
