@@ -5,7 +5,8 @@ RSpec.describe "Api::V1::Musics", type: :request do
   let!(:genres) { create_list(:genre, 10) } # Cria 10 gêneros
   let(:genre_id) { genres.sample.id } # Pega um gênero aleatório para ser associado ao artista
   let!(:musics) { create_list(:music, 45) }
-  let(:music_id) { musics.first.id }
+  let(:music_sample) { musics.first }
+  let(:music_sample_id) { music_sample.id }
 
   # Suíte de testes para GET /api/v1/musics
   describe 'GET /api/v1/musics' do
@@ -42,12 +43,12 @@ RSpec.describe "Api::V1::Musics", type: :request do
 
   # Suíte de testes para GET /api/v1/musics/:id
   describe 'GET /api/v1/musics/:id' do
-    before { get "/api/v1/musics/#{music_id}" }
+    before { get "/api/v1/musics/#{music_sample_id}" }
 
     context 'Quando existir registro' do
       it 'retorna o musica' do
         expect(json).not_to be_empty
-        expect(json['id']).to eq(music_id)
+        expect(json['id']).to eq(music_sample_id)
       end
 
       it 'retorna status code 200' do
@@ -56,7 +57,7 @@ RSpec.describe "Api::V1::Musics", type: :request do
     end
 
     context 'Quando não existir registro' do
-      let(:music_id) { 100 }
+      let(:music_sample_id) { 100 }
 
       it 'retorna status code 404' do
         expect(response).to have_http_status(404)
@@ -96,7 +97,7 @@ RSpec.describe "Api::V1::Musics", type: :request do
     let(:valid_payload) { { title: 'New title' } }
 
     context 'Quando existir registro' do
-      before { put "/api/v1/musics/#{music_id}",  as: :json, params: valid_payload }
+      before { put "/api/v1/musics/#{music_sample_id}",  as: :json, params: valid_payload }
 
       it 'Atualiza o registro' do
         expect(json['title']).to eq('New title')
@@ -110,7 +111,7 @@ RSpec.describe "Api::V1::Musics", type: :request do
 
   # Suíte de testes para DELETE /api/v1/musics/:id
   describe 'DELETE /api/v1/musics/:id' do
-    before { delete "/api/v1/musics/#{music_id}" }
+    before { delete "/api/v1/musics/#{music_sample_id}" }
 
     it 'retorna status code 204' do
       expect(response).to have_http_status(204)
