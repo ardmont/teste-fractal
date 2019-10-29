@@ -39,30 +39,6 @@ RSpec.describe "Api::V1::Musics", type: :request do
         expect(response).to have_http_status(200)
       end
     end
-  end
-
-  # Suíte de testes para GET /api/v1/musics/:id
-  describe 'GET /api/v1/musics/:id' do
-    before { get "/api/v1/musics/#{music_sample_id}" }
-
-    context 'Quando existir registro' do
-      it 'retorna o musica' do
-        expect(json).not_to be_empty
-        expect(json['id']).to eq(music_sample_id)
-      end
-
-      it 'retorna status code 200' do
-        expect(response).to have_http_status(200)
-      end
-    end
-
-    context 'Quando não existir registro' do
-      let(:music_sample_id) { 100 }
-
-      it 'retorna status code 404' do
-        expect(response).to have_http_status(404)
-      end
-    end
 
     context 'GET /api/v1/musics?title=[title]' do 
       # Faz requisições GET HTTP antes de cada exemplo
@@ -91,7 +67,30 @@ RSpec.describe "Api::V1::Musics", type: :request do
         expect(response).to have_http_status(200)
       end
     end
+  end
 
+  # Suíte de testes para GET /api/v1/musics/:id
+  describe 'GET /api/v1/musics/:id' do
+    before { get "/api/v1/musics/#{music_sample_id}" }
+
+    context 'Quando existir registro' do
+      it 'retorna o musica' do
+        expect(json).not_to be_empty
+        expect(json['id']).to eq(music_sample_id)
+      end
+
+      it 'retorna status code 200' do
+        expect(response).to have_http_status(200)
+      end
+    end
+
+    context 'Quando não existir registro' do
+      let(:music_sample_id) { 100 }
+
+      it 'retorna status code 404' do
+        expect(response).to have_http_status(404)
+      end
+    end
   end
 
   # Suíte de testes para POST /api/v1/musics
