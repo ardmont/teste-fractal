@@ -2,6 +2,8 @@ class Api::V1::ArtistsController < ApplicationController
   before_action :set_artist, only: [:show, :update, :destroy]
 
   # GET /api/v1/artists
+  api :GET, '/api/v1/artists', 'lista todos os artistas'
+  #param :id, :string, desc: 'Nome do artista'
   def index
     # Armazena as condições da consulta que serão passadas, como parâmetros, pela requisição
     query_conditions = {}
@@ -31,6 +33,7 @@ class Api::V1::ArtistsController < ApplicationController
   end
 
   # GET /api/v1/artists/:id
+  api :GET, '/api/v1/artists/:id', 'lista um artista específico'
   def show
     # Serializa o objeto artist para posteriormente adicionar os álbums e os gêneros do artista na resposta
     artist_as_json = @artist.as_json
@@ -45,6 +48,7 @@ class Api::V1::ArtistsController < ApplicationController
   end
 
   # POST /api/v1/artists
+  api :POST, '/api/v1/artists/:id', 'cria um artista'
   def create
     # Cria um novo artista e o associa ao genênero informado
     @artist = Artist.new(artist_params)
@@ -57,6 +61,7 @@ class Api::V1::ArtistsController < ApplicationController
   end
 
   # PATCH/PUT /api/v1/artists/:id
+  api :POST, '/api/v1/artists/:id', 'atualiza um artista'
   def update
     if @artist.update(artist_params)
       render json: @artist
@@ -66,6 +71,7 @@ class Api::V1::ArtistsController < ApplicationController
   end
 
   # DELETE /api/v1/artists/:id
+  api :POST, '/api/v1/artists/:id', 'remove um artista'
   def destroy
     @artist.destroy
   end

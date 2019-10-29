@@ -56,6 +56,8 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
       zeitwerk (~> 2.1, >= 2.1.8)
+    apipie-rails (0.5.16)
+      rails (>= 4.1)
     bootsnap (1.4.5)
       msgpack (~> 1.0)
     builder (3.2.3)
@@ -177,6 +179,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  apipie-rails
   bootsnap (>= 1.4.2)
   byebug
   database_cleaner

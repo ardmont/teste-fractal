@@ -28,6 +28,9 @@ gem 'bootsnap', '>= 1.4.2', require: false
 # Pagination
 gem 'will_paginate', '~> 3.1.0'
 
+# Documentation
+gem 'apipie-rails'
+
 group :test do
   gem 'factory_bot_rails'
   gem 'shoulda-matchers'
