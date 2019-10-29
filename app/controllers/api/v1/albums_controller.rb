@@ -4,6 +4,10 @@ class Api::V1::AlbumsController < ApplicationController
   before_action :set_album, only: [:show, :update, :destroy]
 
   # GET /api/v1/albums
+  api :GET, '/api/v1/albums', 'lista todos os álbums'
+  param :title, String, desc: 'título do álbum'
+  param :genre_id, String, desc: 'id do gênero do álbum'
+  param :artist_id, String, desc: 'id do artista do álbum'
   def index
     # Armazena as condições da consulta que serão passadas, como parâmetros, pela requisição
     query_conditions = {}
@@ -37,6 +41,8 @@ class Api::V1::AlbumsController < ApplicationController
   end
 
   # GET /api/v1/albums/:id
+  api :GET, '/api/v1/albums/:id', 'lista um álbum específico'
+  param :id, :number, desc: 'id do álbum', required: true
   def show
     # Serializa o objeto album para posteriormente adicionar artist e musics
     album_as_json = @album.as_json
@@ -54,6 +60,10 @@ class Api::V1::AlbumsController < ApplicationController
   end
 
   # POST /api/v1/albums
+  api :POST, '/api/v1/albums', 'Cria um álbum'
+  param :title, String, desc: 'título do álbum', required: true
+  param :genre_id, Numeric, desc: 'id do gênero do álbum', required: true
+  param :artist_id, Numeric, desc: 'id do artista do álbum', required: true
   def create
     # Cria um novo Album e passa o objeto do artist encontrado como valor para o campo artist
     @album = Album.new(album_params.merge({artist: @artist}))
@@ -69,6 +79,11 @@ class Api::V1::AlbumsController < ApplicationController
   end
 
   # PATCH/PUT /api/v1/albums/:id
+  api :PUT, '/api/v1/albums/:id', 'atualiza um álbum'
+  param :id, :number, desc: 'id do álbum', required: true
+  param :title, String, desc: 'título do álbum'
+  param :genre_id, Numeric, desc: 'id do gênero do álbum'
+  param :artist_id, Numeric, desc: 'id do artista do álbum'
   def update
     # Verifica se existem musicas a serem adicionadas, e as vincula ao álbum
     if(defined?(@musics)) then @album.musics << @musics end
@@ -88,6 +103,8 @@ class Api::V1::AlbumsController < ApplicationController
   end
 
   # DELETE /api/v1/albums/:id
+  api :DEL, '/api/v1/albums/:id', 'remove um álbum'
+  param :id, :number, desc: 'id da música', required: true
   def destroy
     @album.destroy
   end

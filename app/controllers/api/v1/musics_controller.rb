@@ -52,7 +52,7 @@ class Api::V1::MusicsController < ApplicationController
   # POST /api/v1/musics
   api :POST, '/api/v1/musics', 'Cria uma música'
   param :title, String, desc: 'título da música', required: true
-  param :genre_id, Numeric, desc: 'id do gênero do música', required: true 
+  param :genre_id, Numeric, desc: 'id do gênero da música', required: true 
   def create
     @music = Music.new(music_params)
 
@@ -65,9 +65,9 @@ class Api::V1::MusicsController < ApplicationController
 
   # PATCH/PUT /api/v1/musics/:id
   api :PUT, '/api/v1/musics/:id', 'atualiza uma música'
-  param :id, :number, desc: 'id da musica', required: true
+  param :id, :number, desc: 'id da música', required: true
   param :title, String, desc: 'título da música'
-  param :genre_id, Numeric, desc: 'id do gênero do música'
+  param :genre_id, Numeric, desc: 'id do gênero da música'
   def update
     if @music.update(music_params)
       render json: @music
