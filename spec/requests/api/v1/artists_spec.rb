@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Api::V1::Artists', type: :request do
   # Inicia os dados de teste utilizando a factory criada pelo factory_bot
   let!(:genres) { create_list(:genre, 10) } # Cria 10 gêneros
-  let(:genre_id) { genres.sample.id } # Pega um gênero aleatório para ser associado ao artista
+  let(:genre_sample) { genres.sample } # Pega um gênero aleatório para ser associado ao artista
   let!(:artists) { create_list(:artist, 45) } # Cria 45 artistas
   let(:artist_sample) { artists.sample } # Pega um artista aleatório para ser usado como amostra nos testes
   let(:artist_sample_id) { artist_sample.id }
@@ -56,11 +56,11 @@ RSpec.describe 'Api::V1::Artists', type: :request do
 
     context 'GET /api/v1/artists?genre_id=[genre_id]' do 
       # Faz requisições GET HTTP antes de cada exemplo
-      before { get "/api/v1/artists?genre_id=#{artist_sample.genre_id}" }
+      before { get "/api/v1/artists?genre_id=#{artist_sample.genre.id}" }
       
       it 'retorna os artistas pelo gênero especificado' do
         expect(json).not_to be_empty
-        expect(json[0]['genre_id']).to eq(artist_sample.genre_id)
+        expect(json[0]['genre']['name']).to eq(artist_sample.genre.name)
       end
 
       it 'retorna status code 200 após consulta por gênero' do
@@ -96,7 +96,7 @@ RSpec.describe 'Api::V1::Artists', type: :request do
   # Suíte de testes para POST /api/v1/artists
   describe 'POST /api/v1/artists' do
     # Payload válido
-    let(:valid_payload) { { name: 'Test Artist', genre_id: genre_id } }
+    let(:valid_payload) { { name: 'Test Artist', genre_id: genre_sample.id } }
 
     context 'Quando o payload for válido' do
       before { post '/api/v1/artists', as: :json, params: valid_payload }
@@ -112,7 +112,7 @@ RSpec.describe 'Api::V1::Artists', type: :request do
 
     context 'Quando o payload não for válido' do
       # Requisião com com payload inválido. Está sem o nome do artista.
-      before { post '/api/v1/artists', as: :json, params: { genre_id: genre_id } }
+      before { post '/api/v1/artists', as: :json, params: { genre_id: genre_sample.id } }
 
       it 'retorna status code 422' do
         expect(response).to have_http_status(422)
