@@ -60,7 +60,7 @@ RSpec.describe "Api::V1::Musics", type: :request do
       
       it 'retorna as musicas pelo gênero especificado' do
         expect(json).not_to be_empty
-        expect(json[0]['genre_id']).to eq(music_sample.genre_id)
+        expect(json[0]['genre']['name']).to eq(music_sample.genre.name)
       end
 
       it 'retorna status code 200 após consulta por gênero' do
