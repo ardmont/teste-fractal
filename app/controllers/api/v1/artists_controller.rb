@@ -14,39 +14,14 @@ class Api::V1::ArtistsController < ApplicationController
     # Busca todos os artistas, com paginação de 30 elementos por página e faz eager loading com Albums
     artists = Artist.includes(:albums, :genre).where(query_conditions).paginate(page: params[:page], per_page: 30)
 
-    # Este array armazenará os artistas e será utilizado como resposta
-    response = []
-
-    artists.each do |artist|
-      # Serializa o objeto artist para posteriormente adicionar os álbums e os gêneros do artista na resposta
-      artist_as_json = artist.as_json
-
-      # Adiciona os álbums do artista ao json que será enviado
-      artist_as_json["albums"] = artist.albums
-
-      # Adiciona o gênero do artista ao json que será enviado
-      artist_as_json["genre"] = artist.genre
-
-      response << artist_as_json
-    end
-
-    render json: response
+    render json: artists
   end
 
   # GET /api/v1/artists/:id
   api :GET, '/api/v1/artists/:id', 'lista um artista específico'
   param :id, :number, desc: 'id do artista', required: true
   def show
-    # Serializa o objeto artist para posteriormente adicionar os álbums e os gêneros do artista na resposta
-    artist_as_json = @artist.as_json
-
-    # Adiciona os álbums do artista ao json que será enviado
-    artist_as_json["albums"] = @artist.albums
-
-    # Adiciona o gênero do artista ao json que será enviado
-    artist_as_json["genre"] = @artist.genre
-
-    render json: artist_as_json
+    render json: @artist
   end
 
   # POST /api/v1/artists
