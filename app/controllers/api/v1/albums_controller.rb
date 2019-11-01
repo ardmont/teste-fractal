@@ -8,54 +8,17 @@ class Api::V1::AlbumsController < ApplicationController
   param :genre_id, String, desc: 'id do gênero do álbum'
   param :artist_id, String, desc: 'id do artista do álbum'
   def index
-    # Armazena as condições da consulta que serão passadas, como parâmetros, pela requisição
-    query_conditions = {}
-    if(params[:title].present?) then query_conditions[:title] = params[:title] end
-    if(params[:genre_id].present?) then query_conditions[:genre_id] = params[:genre_id] end
-    if(params[:artist_id].present?) then query_conditions[:artist_id] = params[:artist_id] end
-    
     # Busca todos os álbums, com paginação de 30 elementos por página e faz eager loading com Artist e Music
-    albums = Album.includes(:artist, :musics, :genre).where(query_conditions).paginate(page: params[:page], per_page: 30)
+    albums = Album.includes(:artist, :musics, :genre).where(album_params).paginate(page: params[:page], per_page: 30)
 
-    # Este array armazenará os álbums e será utilizado como resposta
-    response = []
-
-    albums.each do |album|
-      # Serializa o objeto album para posteriormente adicionar artist e musics
-      album_as_json = album.as_json
-
-      # Adiciona o artista do álbum ao json que será enviado
-      album_as_json["artist"] = album.artist
-
-      # Adiciona as musicas do álbum ao json que será enviado
-      album_as_json["musics"] = album.musics.as_json
-
-      # Adiciona o gênero do álbum ao json que será enviado
-      album_as_json["genre"] = album.genre
-
-      response << album_as_json
-    end
-
-    render json: response
+    render json: albums
   end
 
   # GET /api/v1/albums/:id
   api :GET, '/api/v1/albums/:id', 'lista um álbum específico'
   param :id, :number, desc: 'id do álbum', required: true
   def show
-    # Serializa o objeto album para posteriormente adicionar artist e musics
-    album_as_json = @album.as_json
-
-    # Adiciona o artista do álbum ao json que será enviado
-    album_as_json["artist"] = @album.artist
-
-    # Adiciona as musicas do álbum ao json que será enviado
-    album_as_json["musics"] = @album.musics.as_json
-
-    # Adiciona o gênero do álbum ao json que será enviado
-    album_as_json["genre"] = @album.genre
-
-    render json: album_as_json
+    render json: @album
   end
 
   # POST /api/v1/albums
@@ -126,6 +89,6 @@ class Api::V1::AlbumsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def album_params
-      params.fetch(:album, {}).permit(:title, :genre_id, :artist_id, :favorite)
+      params.permit(:title, :genre_id, :artist_id, :favorite)
     end
 end
