@@ -31,6 +31,8 @@ gem 'will_paginate', '~> 3.1.0'
 # Documentation
 gem 'apipie-rails'
 
+gem 'active_model_serializers', '~> 0.10.0'
+
 group :test do
   gem 'factory_bot_rails'
   gem 'shoulda-matchers'
