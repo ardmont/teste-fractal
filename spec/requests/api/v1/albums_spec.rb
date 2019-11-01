@@ -62,7 +62,7 @@ RSpec.describe "Api::V1::Albums", type: :request do
       
       it 'retorna os álbums pelo gênero especificado' do
         expect(json).not_to be_empty
-        expect(json[0]['genre_id']).to eq(album_sample.genre_id)
+        expect(json[0]['genre']['name']).to eq(album_sample.genre.name)
       end
 
       it 'retorna status code 200 após consulta por gênero' do
@@ -76,7 +76,7 @@ RSpec.describe "Api::V1::Albums", type: :request do
       
       it 'retorna as álbums pelo artista especificado' do
         expect(json).not_to be_empty
-        expect(json[0]['artist_id']).to eq(album_sample.artist_id)
+        expect(json[0]['artist']['name']).to eq(album_sample.artist.name)
       end
 
       it 'retorna status code 200 após consulta por artista' do
