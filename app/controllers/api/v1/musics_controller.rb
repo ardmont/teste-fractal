@@ -6,47 +6,17 @@ class Api::V1::MusicsController < ApplicationController
   param :title, String, desc: 'título da música'
   param :genre_id, String, desc: 'id do gênero do música'
   def index
-    # Armazena as condições da consulta que serão passadas, como parâmetros, pela requisição
-    query_conditions = {}
-    if(params[:title].present?) then query_conditions[:title] = params[:title] end
-    if(params[:genre_id].present?) then query_conditions[:genre_id] = params[:genre_id] end
-
     # Busca todos as musicas, com paginação de 30 elementos por página e faz eager loading com Albums
-    musics = Music.includes(:albums, :genre).where(query_conditions).paginate(page: params[:page], per_page: 30)
-
-    # Este array armazenará os artistas e será utilizado como resposta
-    response = []
-
-    musics.each do |music|
-      # Serializa o objeto music para posteriormente adicionar os álbums relacionados a música
-      music_as_json = music.as_json
-
-      # Adiciona os álbums relacionados a música ao json que será enviado
-      music_as_json["albums"] = music.albums
-
-      # Adiciona o gênero da musica ao json que será enviado
-      music_as_json["genre"] = music.genre
-
-      response << music_as_json
-    end
-
-    render json: response
+    musics = Music.includes(:albums, :genre).where(music_params).paginate(page: params[:page], per_page: 30)
+    
+    render json: musics
   end
 
   # GET /api/v1/musics/:id
   api :GET, '/api/v1/musics/:id', 'lista uma música específica'
   param :id, :number, desc: 'id da musica', required: true
-  def show
-    # Serializa o objeto music para posteriormente adicionar os álbums relacionados a música
-    music_as_json = @music.as_json
-
-    # Adiciona os álbums relacionados a música ao json que será enviado
-    music_as_json["albums"] = @music.albums
-
-    # Adiciona o gênero da musica ao json que será enviado
-    music_as_json["genre"] = @music.genre
-    
-    render json: music_as_json
+  def show    
+    render json: @music
   end
 
   # POST /api/v1/musics
@@ -91,6 +61,6 @@ class Api::V1::MusicsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def music_params
-      params.fetch(:music, {}).permit(:title, :duration, :genre_id)
+      params.permit(:title, :duration, :genre_id)
     end
 end
