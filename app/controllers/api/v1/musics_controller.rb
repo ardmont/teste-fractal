@@ -7,7 +7,9 @@ class Api::V1::MusicsController < ApplicationController
   param :genre_id, String, desc: 'id do gênero do música'
   def index
     # Busca todos as musicas, com paginação de 30 elementos por página e faz eager loading com Albums
-    musics = Music.includes(:albums, :genre).where(music_params).paginate(page: params[:page], per_page: 30)
+    musics = Music.ransack(params)
+    musics.sorts = 'title asc' if musics.sorts.empty?
+    musics = musics.result.includes(:albums, :genre).paginate(page: params[:page], per_page: 30)
     
     render json: musics
   end
