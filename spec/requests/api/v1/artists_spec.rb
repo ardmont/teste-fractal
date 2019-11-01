@@ -40,9 +40,9 @@ RSpec.describe 'Api::V1::Artists', type: :request do
       end
     end
 
-    context 'GET /api/v1/artists?name=[name]' do 
+    context 'GET /api/v1/artists?name_eq=[name]' do 
       # Faz requisições GET HTTP antes de cada exemplo
-      before { get "/api/v1/artists?name=#{artist_sample.name}" }
+      before { get "/api/v1/artists?name_eq=#{artist_sample.name}" }
       
       it 'retorna o artista pelo nome especificado' do
         expect(json).not_to be_empty
@@ -54,9 +54,9 @@ RSpec.describe 'Api::V1::Artists', type: :request do
       end
     end
 
-    context 'GET /api/v1/artists?genre_id=[genre_id]' do 
+    context 'GET /api/v1/artists?genre_id_eq=[genre_id]' do 
       # Faz requisições GET HTTP antes de cada exemplo
-      before { get "/api/v1/artists?genre_id=#{artist_sample.genre.id}" }
+      before { get "/api/v1/artists?genre_id_eq=#{artist_sample.genre.id}" }
       
       it 'retorna os artistas pelo gênero especificado' do
         expect(json).not_to be_empty
