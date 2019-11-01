@@ -9,7 +9,9 @@ class Api::V1::AlbumsController < ApplicationController
   param :artist_id, String, desc: 'id do artista do álbum'
   def index
     # Busca todos os álbums, com paginação de 30 elementos por página e faz eager loading com Artist e Music
-    albums = Album.includes(:artist, :musics, :genre).where(album_params).paginate(page: params[:page], per_page: 30)
+    albums = Album.ransack(params)
+    albums.sorts = 'title asc' if albums.sorts.empty?
+    albums = albums.result.includes(:artist, :musics, :genre).paginate(page: params[:page], per_page: 30) 
 
     render json: albums
   end
