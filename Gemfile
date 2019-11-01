@@ -33,6 +33,8 @@ gem 'apipie-rails'
 
 gem 'active_model_serializers', '~> 0.10.0'
 
+gem 'ransack'
+
 group :test do
   gem 'factory_bot_rails'
   gem 'shoulda-matchers'
