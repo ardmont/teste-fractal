@@ -42,9 +42,9 @@ RSpec.describe "Api::V1::Albums", type: :request do
       end
     end
 
-    context 'GET /api/v1/albums?title=[title]' do 
+    context 'GET /api/v1/albums?title_eq=[title]' do 
       # Faz requisições GET HTTP antes de cada exemplo
-      before { get "/api/v1/albums?title=#{album_sample.title}" }
+      before { get "/api/v1/albums?title_eq=#{album_sample.title}" }
       
       it 'retorna o álbum pelo título especificado' do
         expect(json).not_to be_empty
@@ -56,9 +56,9 @@ RSpec.describe "Api::V1::Albums", type: :request do
       end
     end
 
-    context 'GET /api/v1/albums?genre_id=[genre_id]' do 
+    context 'GET /api/v1/albums?genre_id_eq=[genre_id]' do 
       # Faz requisições GET HTTP antes de cada exemplo
-      before { get "/api/v1/albums?genre_id=#{album_sample.genre_id}" }
+      before { get "/api/v1/albums?genre_id_eq=#{album_sample.genre_id}" }
       
       it 'retorna os álbums pelo gênero especificado' do
         expect(json).not_to be_empty
