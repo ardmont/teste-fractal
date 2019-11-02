@@ -5,6 +5,7 @@ class Api::V1::ArtistsController < ApplicationController
   api :GET, '/api/v1/artists', 'lista todos os artistas'
   param :name, String, desc: 'name do artista'
   param :genre_id, String, desc: 'id do gênero do artista'
+  param :s, String, desc: 'Ordenação desejada. ex: s=name+asc'
   def index
     # Busca todos os artistas, com paginação de 30 elementos por página e faz eager loading com Albums
     artists = Artist.ransack(params)

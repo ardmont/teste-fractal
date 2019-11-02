@@ -7,6 +7,7 @@ class Api::V1::AlbumsController < ApplicationController
   param :title, String, desc: 'título do álbum'
   param :genre_id, String, desc: 'id do gênero do álbum'
   param :artist_id, String, desc: 'id do artista do álbum'
+  param :s, String, desc: 'Ordenação desejada. ex: s=title+asc'
   def index
     # Busca todos os álbums, com paginação de 30 elementos por página e faz eager loading com Artist e Music
     albums = Album.ransack(params)

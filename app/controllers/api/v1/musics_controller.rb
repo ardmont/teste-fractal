@@ -5,6 +5,7 @@ class Api::V1::MusicsController < ApplicationController
   api :GET, '/api/v1/musics', 'lista todas as músicas'
   param :title, String, desc: 'título da música'
   param :genre_id, String, desc: 'id do gênero do música'
+  param :s, String, desc: 'Ordenação desejada. ex: s=title+asc'
   def index
     # Busca todos as musicas, com paginação de 30 elementos por página e faz eager loading com Albums
     musics = Music.ransack(params)
