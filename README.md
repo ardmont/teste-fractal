@@ -49,6 +49,10 @@ A documentação dos endpoints foi criada com a biblioteca apipie, e pode ser vi
 
 OBS: Os parâmetros enviados para os endpoints POST e PUT devem estar no formato json, no body da requisição. Exceto pelo parâmetro id, que fará parte da uri da requisição.
 
+OBS 2: Os parâmentros enviados para os endpoints GET precisam usar [matchers](https://github.com/activerecord-hackery/ransack/wiki/Basic-Searching). 
+Ex:
+Listar todos os artitas cujo nome contém a string "John": `GET http://localhost:3000/api/v1?name_cont=John`
+
 ## Exemplos de utilização
 
 ### Listar todos os álbums
