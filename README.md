@@ -21,6 +21,8 @@ Este projeto consiste em uma API criada em ruby on rails, que fornece e gerênci
 * rspec-rails
 * shoulda-matchers
 * will_paginate
+* active_model_serializers
+* ransak
 
 ## Instalação e execução
 
